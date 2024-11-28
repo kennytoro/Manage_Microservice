@@ -18,7 +18,7 @@ pipeline {
 
         stage('Login to docker hub') {
             steps {
-                sh "cat passwd | docker login -u kennytoro --password-stdin"
+                sh "cat passwd | sudo docker login -u kennytoro --password-stdin"
                 echo 'Login successfully!!!'
             }
         }
@@ -26,30 +26,30 @@ pipeline {
         stage('Build docker images of the Microservices') {
             steps {
                 echo "Welcome to ${NAME} Jenkins World"
-                sh "docker build ./auth-service/ -t ${auth}"
-                sh "docker build ./user-service/ -t ${user}"
-                sh "docker build ./notification-service/ -t ${notification}"
-                sh "docker build ./order-service/ -t ${order}"
-                sh "docker build ./product-service/ -t ${product}"
-                sh "docker build ./gateway-service/ -t ${gateway}"
+                sh "sudo docker build ./auth-service/ -t ${auth}"
+                sh "sudo docker build ./user-service/ -t ${user}"
+                sh "sudo docker build ./notification-service/ -t ${notification}"
+                sh "sudo docker build ./order-service/ -t ${order}"
+                sh "sudo docker build ./product-service/ -t ${product}"
+                sh "sudo docker build ./gateway-service/ -t ${gateway}"
                 echo "Docker image build successfully"
             }
         }
 
         stage('Push Docker Image to Toro repo') {
             steps {
-                sh "docker push ${auth}"
-                sh "docker push ${user}"
-                sh "docker push ${notification}"
-                sh "docker push ${order}"
-                sh "docker push ${product}"
-                sh "docker push ${gateway}"
+                sh "sudo docker push ${auth}"
+                sh "sudo docker push ${user}"
+                sh "sudo docker push ${notification}"
+                sh "sudo docker push ${order}"
+                sh "sudo docker push ${product}"
+                sh "sudo docker push ${gateway}"
             }
         }
 
         stage('Test') {
             steps {
-                sh "docker images"
+                sh "sudo docker images"
             }
         }
         stage('Running the image on k8s cluster') {
