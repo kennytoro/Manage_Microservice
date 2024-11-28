@@ -1,0 +1,77 @@
+pipeline {
+    agent any
+    environment {
+        //define your vars
+        NAME = 'Toro' 
+        gateway = "kennytoro/gateway-service"
+        product = "kennytoro/product-service"
+        order = "kennytoro/order-service"
+        notification = "kennytoro/notification-service"
+        auth = "kennytoro/auth-service"
+        user = "kennytoro/user-service"
+    }
+    triggers {
+        pollSCM '* * * * *'
+    }
+
+    stages {
+
+        stage('Login to docker hub') {
+            steps {
+                sh "cat passwd | docker login -u kennytoro --password-stdin"
+                echo 'Login successfully!!!'
+            }
+        }
+
+        stage('Build docker images of the Microservices') {
+            steps {
+                echo "Welcome to ${NAME} Jenkins World"
+                sh "docker build ./auth-service/ -t ${auth}"
+                sh "docker build ./user-service/ -t ${user}"
+                sh "docker build ./notification-service/ -t ${notification}"
+                sh "docker build ./order-service/ -t ${order}"
+                sh "docker build ./product-service/ -t ${product}"
+                sh "docker build ./gateway-service/ -t ${gateway}"
+                echo "Docker image build successfully"
+            }
+        }
+
+        stage('Push Docker Image to Toro repo') {
+            steps {
+                sh "docker push ${auth}"
+                sh "docker push ${user}"
+                sh "docker push ${notification}"
+                sh "docker push ${order}"
+                sh "docker push ${product}"
+                sh "docker push ${gateway}"
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh "docker images"
+            }
+        }
+        stage('Running the image on k8s cluster') {
+            steps {
+                sh " kubectl apply -f ./deployment/"
+            }
+        }
+    }
+
+    post {
+        success {
+            sh '''
+            kubectl top nodes
+            kubectl get pods
+            kubectl get svc
+            kubectl get deployment
+            kubectl top pods
+            '''
+            echo " A successful ${BUILD_ID} build"
+        }
+        failure {
+            echo "Pipeline failed... Ooops man down!!"
+        }
+    }
+}
