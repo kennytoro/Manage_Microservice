@@ -52,9 +52,13 @@ pipeline {
                 sh "sudo docker images"
             }
         }
-        stage('Running the image on k8s cluster') {
+        stage('Running the deployment and services on k8s cluster') {
             steps {
-                sh " kubectl apply -f ./deployment/"
+                sh " kubectl apply -f ./deployment/microgateway/"
+                sh " kubectl apply -f ./deployment/votingapp/"
+                sh " kubectl apply -f ./deployment/timer/"
+                sh " kubectl apply -f ./service/votingapp-svc/"
+                sh " kubectl apply -f ./service/timer-svc/"
             }
         }
     }
