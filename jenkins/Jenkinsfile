@@ -57,8 +57,10 @@ pipeline {
                 sh " kubectl apply -f ./deployment/microgateway/"
                 sh " kubectl apply -f ./deployment/votingapp/"
                 sh " kubectl apply -f ./deployment/timer/"
+                sh " kubectl apply -f ./deployment/weatherapp/"
                 sh " kubectl apply -f ./service/votingapp-svc/"
                 sh " kubectl apply -f ./service/timer-svc/"
+                sh " kubectl apply -f ./service/weather-svc/"
             }
         }
     }
