@@ -58,6 +58,7 @@ pipeline {
                 sh " kubectl apply -f ./deployment/votingapp/"
                 sh " kubectl apply -f ./deployment/timer/"
                 sh " kubectl apply -f ./deployment/weatherapp/"
+                sh " kubectl apply -f ./deployment/webapp-ingress/"
                 sh " kubectl apply -f ./service/votingapp-svc/"
                 sh " kubectl apply -f ./service/timer-svc/"
                 sh " kubectl apply -f ./service/weather-svc/"
@@ -74,6 +75,7 @@ pipeline {
             kubectl get deployment
             kubectl top pods
             '''
+            sh " kubectl apply -f ./ingress/"
             echo " A successful ${BUILD_ID} build"
         }
         failure {
