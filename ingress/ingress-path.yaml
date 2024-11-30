@@ -3,27 +3,34 @@ kind: Ingress
 metadata:
   name: ingress-webapp
 spec:
+  defaultBackend:
+    service:
+      name: error-service
+      port:
+        number: 8080
   rules:
   - http:
       paths:
       - backend:
           service:
-            name: error-service
+            name: weather-svc
             port:
-              number: 8080
-        path: /error
-        pathType: Exact
+              number: 3000
+        path: /weatherapp
+        pathType: Prefix
+
       - backend:
           service:
             name: video-service
             port:
               number: 8080
         path: /video
-        pathType: Exact
+        pathType: Prefix
+        
       - backend:
           service:
             name: stop-watch-svc
             port:
               number: 3500
         path: /time
-        pathType: Exact
+        pathType: Prefix
