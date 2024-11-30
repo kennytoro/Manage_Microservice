@@ -4,28 +4,26 @@ metadata:
   name: ingress-webapp
 spec:
   rules:
-    - https:
-				paths:
-					- path: /error
-						pathType: Prefix
-						backend:
-							service:
-								name: error-service
-								port:
-									number: 8080
-
-					- path: /video
-						pathType: Prefix
-						backend:
-							service:
-								name: video-service
-								port:
-									number: 8080
-
-					- path: /time
-						pathType: Prefix
-						backend:
-							service:
-								name: stop-watch-svc
-								port:
-									number: 3500
+  - http:
+      paths:
+      - backend:
+          service:
+            name: error-service
+            port:
+              number: 8080
+        path: /error
+        pathType: Exact
+      - backend:
+          service:
+            name: video-service
+            port:
+              number: 8080
+        path: /video
+        pathType: Exact
+      - backend:
+          service:
+            name: stop-watch-svc
+            port:
+              number: 3500
+        path: /time
+        pathType: Exact
