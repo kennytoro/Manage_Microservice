@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-webapp
+  annotations.io/ingress.class: nginx
 spec:
   defaultBackend:
     service:
@@ -26,7 +27,7 @@ spec:
               number: 8080
         path: /video
         pathType: Prefix
-        
+
       - backend:
           service:
             name: stop-watch-svc

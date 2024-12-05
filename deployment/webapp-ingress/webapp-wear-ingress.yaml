@@ -25,6 +25,7 @@ metadata:
 spec:
   selector:
     app: webapp-wear
+  type: NodePort
   ports:
     - protocol: TCP
       port: 8080
