@@ -16,7 +16,7 @@ pipeline {
 
     stages {
 
-        stage('Login to docker hub') {
+        stage('Login to docker hub!') {
             steps {
                 sh "cat passwd | sudo docker login -u kennytoro --password-stdin"
                 echo 'Login successfully!!!'
